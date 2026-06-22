@@ -1,0 +1,10 @@
+[project]
+name = "aws-bedrock"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "langchain-aws>=1.6.0",
+    "langgraph>=1.2.6",
+]
