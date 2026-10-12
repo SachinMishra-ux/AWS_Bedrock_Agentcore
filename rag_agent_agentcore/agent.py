@@ -34,3 +34,13 @@ def compile_rag_agent(checkpointer=None):
         checkpointer=checkpointer
     )
     return agent
+
+if __name__ == "__main__":
+    # For testing purposes, compile the agent and run a sample query
+    agent = compile_rag_agent()
+
+    # configuration
+    config = {"configurable": {"thread_id": "rag-agent-thread"}}
+    test_query = "What is FAISS?"
+    result = agent.invoke({"messages": [{"role": "user", "content": test_query}]}, config=config)
+    print("Test Query Result:", result)

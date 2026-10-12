@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Bedrock & AgentCore - Educator Slide Deck</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation (Presenter Control Panel) -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-aws">AWS</span>
+                    <span class="logo-text">AgentCore</span>
+                </div>
+                <button class="toggle-sidebar-btn" id="hide-sidebar-btn" title="Collapse Sidebar">&larr;</button>
+            </div>
+            
+            <nav class="slide-nav">
+                <ul>
+                    <li class="nav-item active" data-slide="0"><span class="nav-num">01</span> Title & Welcome</li>
+                    <li class="nav-item" data-slide="1"><span class="nav-num">02</span> What is AWS Bedrock?</li>
+                    <li class="nav-item" data-slide="2"><span class="nav-num">03</span> Bedrock Key Capabilities</li>
+                    <li class="nav-item" data-slide="3"><span class="nav-num">04</span> Transitioning to Agents</li>
+                    <li class="nav-item" data-slide="4"><span class="nav-num">05</span> AgentCore Architecture</li>
+                    <li class="nav-item" data-slide="5"><span class="nav-num">06</span> Modules: Harness & Built-ins</li>
+                    <li class="nav-item" data-slide="6"><span class="nav-num">07</span> Modules: Gateways & Identity</li>
+                    <li class="nav-item" data-slide="7"><span class="nav-num">08</span> Modules: Memory & Policy</li>
+                    <li class="nav-item" data-slide="8"><span class="nav-num">09</span> Modules: Registry & Runtime</li>
+                    <li class="nav-item" data-slide="9"><span class="nav-num">10</span> Modules: Assessment & Payments</li>
+                    <li class="nav-item" data-slide="10"><span class="nav-num">11</span> Comparison: Bedrock vs AgentCore</li>
+                    <li class="nav-item" data-slide="11"><span class="nav-num">12</span> Discussion & Summary</li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="shortcut-tip">
+                    <p>⌨️ Use <strong>Left/Right Arrows</strong> or <strong>Space</strong> to navigate.</p>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Toggle Button to Show Sidebar when collapsed -->
+        <button class="show-sidebar-btn hidden" id="show-sidebar-btn" title="Expand Sidebar">
+            <span>&#9776; Menu</span>
+        </button>
+
+        <!-- Main Slide Viewport -->
+        <main class="presentation-viewport">
+            <!-- Progress Bar -->
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+
+            <!-- Slide Wrapper -->
+            <div class="slides-wrapper" id="slides-wrapper">
+                
+                <!-- SLIDE 1: Title Slide -->
+                <section class="slide active" id="slide-0">
+                    <div class="slide-content title-slide-layout">
+                        <div class="glow-bg"></div>
+                        <div class="title-meta">CURRICULUM MODULE • CLOUD AI ARCHITECTURES</div>
+                        <h1 class="glow-text">AWS Bedrock &amp;<br><span class="accent-purple">Amazon Bedrock AgentCore</span></h1>
+                        <p class="slide-subtitle">A comprehensive educator guide to building, deploying, and scaling secure enterprise-grade AI agents.</p>
+                        
+                        <div class="title-footer">
+                            <div class="author-badge">
+                                <span class="badge-icon">🏫</span>
+                                <span>Lecture &amp; Technical Slide Deck</span>
+                            </div>
+                            <div class="press-start">Press <span class="kbd">Space</span> or <span class="kbd">&rarr;</span> to begin</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE 2: What is AWS Bedrock? -->
+                <section class="slide" id="slide-1">
+                    <div class="slide-content grid-2-col">
+                        <div class="col-left">
+                            <div class="slide-section-label">AWS BEDROCK OVERVIEW</div>
+                            <h2>Demystifying <span class="accent-cyan">AWS Bedrock</span></h2>
+                            <p class="description-large">Amazon Bedrock is a fully managed, serverless AWS service that provides developer access to high-performing foundation models (FMs) via a single, unified API.</p>
+                            
+                            <div class="highlight-box">
+                                <strong>Core Mission:</strong> Bedrock abstracts away the complexities of hosting and running massive machine learning models, allowing developers to focus on application logic and prompts.
+                            </div>
+                        </div>
+                        <div class="col-right flex-center">
+                            <div class="capabilities-card-grid">
+                                <div class="mini-card border-cyan">
+                                    <div class="card-icon">🔌</div>
+                                    <h3>Unified API</h3>
+                                    <p>One unified client API connects to multiple model providers: Anthropic, Meta, Mistral, Cohere, and Amazon.</p>
+                                </div>
+                                <div class="mini-card border-purple">
+                                    <div class="card-icon">🛡️</div>
+                                    <h3>Enterprise Security</h3>
+                                    <p>Your data is encrypted, never exits the VPC, and is never used to train the base model providers.</p>
+                                </div>
+                                <div class="mini-card border-gold">
+                                    <div class="card-icon">⚡</div>
+                                    <h3>Serverless Scale</h3>
+                                    <p>Zero infrastructure management. Pay only for token ingress/egress or provisioned throughput.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="speaker-notes">
+                        <strong>Educator Note:</strong> Emphasize that Bedrock is the *foundation layer* in AWS for generative AI. It gives you the brains (models) and initial safety wrappers. Ask students: "Why is a unified API valuable when model capabilities change every month?"
+                    </div>
+                </section>
+
+                <!-- SLIDE 3: Bedrock Key Capabilities -->
+                <section class="slide" id="slide-2">
+                    <div class="slide-content">
+                        <div class="slide-section-label">AWS BEDROCK CAPABILITIES</div>
+                        <h2>Key Services Under Bedrock</h2>
+                        <p class="slide-intro-text">Amazon Bedrock is not just model access; it is an ecosystem of features that wrap and customize foundation models.</p>
+                        
+                        <div class="features-row-grid">
+                            <div class="feature-card">
+                                <div class="feature-num">01</div>
+                                <h3>Knowledge Bases</h3>
+                                <p>Out-of-the-box **Retrieval-Augmented Generation (RAG)**. Automatically syncs documents in S3, chunks/embeds them, and loads them into vector databases (OpenSearch Serverless, Pinecone, Aurora) for context-aware querying.</p>
+                            </div>
+                            
+                            <div class="feature-card">
+                                <div class="feature-num">02</div>
+                                <h3>Guardrails</h3>
+                                <p>Apply custom safety parameters. Filters out toxic content, masks PII (Personally Identifiable Information) before model input or after output, and blocks prohibited topics using simple keyword or natural language rules.</p>
+                            </div>
+
+                            <div class="feature-card">
+                                <div class="feature-num">03</div>
+                                <h3>Model Customization</h3>
+                                <p>Fine-tune model weights or run continued pre-training on proprietary datasets securely. You can also import custom weights directly via Custom Model Import.</p>
+                            </div>
+
+                            <div class="feature-card">
+                                <div class="feature-num">04</div>
+                                <h3>Model Evaluation</h3>
+                                <p>Compare models side-by-side using automatic criteria (accuracy, toxicity) or human evaluation tasks to select the most cost-effective and capable foundation model for your workload.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="speaker-notes">
+                        <strong>Educator Note:</strong> Point out that Guardrails acts as a firewall *between* the user and the LLM, whereas Knowledge Bases is the automated data pipeline feeding the LLM.
+                    </div>
+                </section>
+
+                <!-- SLIDE 4: Transitioning to Agents -->
+                <section class="slide" id="slide-3">
+                    <div class="slide-content grid-2-col">
+                        <div class="col-left">
+                            <div class="slide-section-label">THE SHIFT TO AGENTS</div>
+                            <h2>From Simple Prompts to <span class="accent-purple">Autonomous Agents</span></h2>
+                            <p class="description-large">Standard LLMs are passive: they wait for a prompt, process it, and output text. In contrast, <strong>AI Agents</strong> are active loops that can plan, reason, invoke external tools, and remember context across sessions.</p>
+                            
+                            <div class="quote-card">
+                                "The hardest part of building AI agents isn't writing the first prototype loop; it's secure deployment, scaling session memory, managing identity permissions, and evaluating behavior in production."
+                            </div>
+                        </div>
+                        <div class="col-right">
+                            <div class="challenges-list">
+                                <div class="challenge-item">
+                                    <div class="challenge-num">1</div>
+                                    <div class="challenge-text">
+                                        <h4>Local Framework Limitations</h4>
+                                        <p>LangGraph, CrewAI, and AutoGen are excellent for prototyping, but lack native cloud scaling, secure sandbox execution, and centralized policy control.</p>
+                                    </div>
+                                </div>
+                                <div class="challenge-item">
+                                    <div class="challenge-num">2</div>
+                                    <div class="challenge-text">
+                                        <h4>Enterprise Needs</h4>
+                                        <p>Organizations require secure session isolation, user authentication, auditing (observability), and strict authorization over what databases and tools an agent can call.</p>
+                                    </div>
+                                </div>
+                                <div class="challenge-item highlight-item">
+                                    <div class="challenge-num">★</div>
+                                    <div class="challenge-text">
+                                        <h4>The Solution: AgentCore</h4>
+                                        <p>A fully managed, framework-agnostic platform specifically built to deploy and scale production agents with enterprise compliance.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="speaker-notes">
+                        <strong>Educator Note:</strong> This is a crucial slide. It establishes *why* AWS AgentCore is necessary. It isn't replacing popular libraries like LangGraph; it's a cloud runtime and orchestration layer that secures and scales them.
+                    </div>
+                </section>
+
+                <!-- SLIDE 5: AgentCore Architecture -->
+                <section class="slide" id="slide-4">
+                    <div class="slide-content full-width-layout">
+                        <div class="slide-section-label">ARCHITECTURAL DIAGRAM</div>
+                        <h2>Amazon Bedrock AgentCore Architecture</h2>
+                        <p class="slide-intro-text">Analyze how components interact. AgentCore acts as the connective fabric between models, developer environments, security tools, and deployment environments.</p>
+                        
+                        <!-- Interactive SVG Diagram resembling user's diagram 1 -->
+                        <div class="diagram-container">
+                            <svg class="architecture-svg" viewBox="0 0 1000 320" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#00f2fe" />
+                                    </marker>
+                                </defs>
+                                <!-- Background grid -->
+                                <rect x="0" y="0" width="1000" height="320" fill="rgba(14, 22, 38, 0.6)" rx="12" stroke="#1f2d47" stroke-width="2"/>
+                                
+                                <!-- Top Agent Layer -->
+                                <g class="svg-node" id="node-agent" onclick="showModuleDetail('agent-layer')">
+                                    <rect x="50" y="20" width="900" height="50" fill="rgba(138, 43, 226, 0.15)" stroke="#8a2be2" stroke-width="2" rx="6" />
+                                    <text x="500" y="42" font-family="'Outfit', sans-serif" font-size="16" fill="#f1f5f9" font-weight="600" text-anchor="middle">Agent Layer</text>
+                                    <text x="500" y="58" font-family="'Plus Jakarta Sans', sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">Any framework (LangGraph, CrewAI, Strands), any model, all popular protocols</text>
+                                </g>
+
+                                <!-- Middle Build Layer: Harness, CLI, SDK -->
+                                <g class="svg-node" id="node-build" onclick="showModuleDetail('build-layer')">
+                                    <rect x="50" y="100" width="900" height="40" fill="rgba(0, 242, 254, 0.1)" stroke="#00f2fe" stroke-width="1.5" rx="6" />
+                                    <!-- Separators -->
+                                    <line x1="330" y1="100" x2="330" y2="140" stroke="rgba(0, 242, 254, 0.3)" />
+                                    <line x1="630" y1="100" x2="630" y2="140" stroke="rgba(0, 242, 254, 0.3)" />
+                                    
+                                    <text x="190" y="125" font-family="'Outfit', sans-serif" font-size="12" fill="#f1f5f9" font-weight="600" text-anchor="middle">Harness: Models, tools, memory</text>
+                                    <text x="480" y="125" font-family="'Outfit', sans-serif" font-size="12" fill="#f1f5f9" font-weight="600" text-anchor="middle">CLI: Strands, models, tools, memory</text>
+                                    <text x="790" y="125" font-family="'Outfit', sans-serif" font-size="12" fill="#f1f5f9" font-weight="600" text-anchor="middle">SDK: Strands, models, tools, memory</text>
+                                </g>
+
+                                <!-- Inner Capabilities (10 Modules Grid) -->
+                                <g class="svg-node" id="node-modules" onclick="showModuleDetail('modules-layer')">
+                                    <rect x="50" y="170" width="700" height="70" fill="rgba(30, 41, 59, 0.8)" stroke="#475569" stroke-dasharray="3,3" rx="6" />
+                                    
+                                    <!-- Mini Blocks inside -->
+                                    <g transform="translate(60, 180)">
+                                        <rect x="0" y="0" width="80" height="50" rx="4" fill="rgba(15, 23, 42, 0.9)" stroke="#64748b" />
+                                        <text x="40" y="25" font-size="9" fill="#f1f5f9" text-anchor="middle" font-family="sans-serif">Built-in</text>
+                                        <text x="40" y="37" font-size="8" fill="#94a3b8" text-anchor="middle" font-family="sans-serif">Tools</text>
+                                    </g>
+                                    <g transform="translate(150, 180)">
+                                        <rect x="0" y="0" width="80" height="50" rx="4" fill="rgba(15, 23, 42, 0.9)" stroke="#64748b" />
+                                        <text x="40" y="25" font-size="9" fill="#f1f5f9" text-anchor="middle" font-family="sans-serif">Gateway</text>
+                                        <text x="40" y="37" font-size="8" fill="#94a3b8" text-anchor="middle" font-family="sans-serif">APIs / MCP</text>
+                                    </g>
+                                    <g transform="translate(240, 180)">
+                                        <rect x="0" y="0" width="80" height="50" rx="4" fill="rgba(15, 23, 42, 0.9)" stroke="#64748b" />
+                                        <text x="40" y="25" font-size="9" fill="#f1f5f9" text-anchor="middle" font-family="sans-serif">Identity</text>
+                                        <text x="40" y="37" font-size="8" fill="#94a3b8" text-anchor="middle" font-family="sans-serif">Auth</text>
+                                    </g>
+                                    <g transform="translate(330, 180)">
+                                        <rect x="0" y="0" width="80" height="50" rx="4" fill="rgba(15, 23, 42, 0.9)" stroke="#64748b" />
+                                        <text x="40" y="25" font-size="9" fill="#f1f5f9" text-anchor="middle" font-family="sans-serif">Memory</text>
+                                        <text x="40" y="37" font-size="8" fill="#94a3b8" text-anchor="middle" font-family="sans-serif">S/L Term</text>
+                                    </g>
+                                    <g transform="translate(420, 180)">
+                                        <rect x="0" y="0" width="80" height="50" rx="4" fill="rgba(15, 23, 42, 0.9)" stroke="#64748b" />
+                                        <text x="40" y="25" font-size="9" fill="#f1f5f9" text-anchor="middle" font-family="sans-serif">Policy</text>
+                                        <text x="40" y="37" font-size="8" fill="#94a3b8" text-anchor="middle" font-family="sans-serif">Cedar Rules</text>
+                                    </g>
+                                    <g transform="translate(510, 180)">
+                                        <rect x="0" y="0" width="80" height="50" rx="4" fill="rgba(15, 23, 42, 0.9)" stroke="#64748b" />
+                                        <text x="40" y="25" font-size="9" fill="#f1f5f9" text-anchor="middle" font-family="sans-serif">Payments</text>
+                                        <text x="40" y="37" font-size="8" fill="#94a3b8" text-anchor="middle" font-family="sans-serif">Paid APIs</text>
+                                    </g>
+                                    <g transform="translate(600, 180)">
+                                        <rect x="0" y="0" width="140" height="50" rx="4" fill="rgba(15, 23, 42, 0.9)" stroke="#64748b" />
+                                        <text x="70" y="25" font-size="9" fill="#f1f5f9" text-anchor="middle" font-family="sans-serif">Registry</text>
+                                        <text x="70" y="37" font-size="8" fill="#94a3b8" text-anchor="middle" font-family="sans-serif">Agents, MCP, Tools, Skills</text>
+                                    </g>
+                                </g>
+
+                                <!-- Deploy: Runtime Layer -->
+                                <g class="svg-node" id="node-runtime" onclick="showModuleDetail('runtime-layer')">
+                                    <rect x="770" y="170" width="180" height="70" fill="rgba(0, 242, 254, 0.05)" stroke="#00f2fe" rx="6" />
+                                    <text x="860" y="200" font-family="'Outfit', sans-serif" font-size="13" fill="#f1f5f9" font-weight="600" text-anchor="middle">Runtime</text>
+                                    <text x="860" y="215" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" fill="#94a3b8" text-anchor="middle">Secure, serverless execution</text>
+                                </g>
+
+                                <!-- Bottom Observability & Evaluations Layer -->
+                                <g class="svg-node" id="node-assess" onclick="showModuleDetail('assess-layer')">
+                                    <rect x="50" y="260" width="900" height="40" fill="rgba(241, 196, 15, 0.08)" stroke="#f1c40f" stroke-width="1" rx="6" />
+                                    <line x1="500" y1="260" x2="500" y2="300" stroke="rgba(241, 196, 15, 0.3)" />
+                                    <text x="275" y="285" font-family="'Outfit', sans-serif" font-size="12" fill="#f1f5f9" font-weight="600" text-anchor="middle">Observability: Monitor &amp; Debug</text>
+                                    <text x="725" y="285" font-family="'Outfit', sans-serif" font-size="12" fill="#f1f5f9" font-weight="600" text-anchor="middle">Evaluations: Batch &amp; Online custom evaluators</text>
+                                </g>
+
+                                <!-- Dynamic Arrow Lines -->
+                                <path d="M 500 70 L 500 95" stroke="#8a2be2" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+                                <path d="M 500 140 L 500 165" stroke="#00f2fe" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+                            </svg>
+                        </div>
+                        <div class="interactive-helper">
+                            <span class="pulse-dot"></span> Click on any layer of the architecture diagram above to view its technical breakdown.
+                        </div>
+                    </div>
+                    <div class="speaker-notes">
+                        <strong>Educator Note:</strong> Walk through the three main lifecycles of AgentCore shown: 
+                        1. **Build**: Using Harness/CLI/SDK to bundle logic, tools, and models.
+                        2. **Deploy**: Scaling securely in a serverless isolation container (Runtime).
+                        3. **Assess**: Monitoring logs, debug calls, and running evaluations.
+                    </div>
+                </section>
+
+                <!-- SLIDE 6: AgentCore Modules Part 1 -->
+                <section class="slide" id="slide-5">
+                    <div class="slide-content grid-2-col">
+                        <div class="col-left">
+                            <div class="slide-section-label">AGENTCORE MODULES • BUILD &amp; TOOLS</div>
+                            <h2>Harness &amp; Built-In Tools</h2>
+                            <p class="description-large">The starting point of building agentic logic within the AgentCore platform.</p>
+                            
+                            <div class="accordion-container">
+                                <div class="accordion-item active">
+                                    <div class="accordion-header">
+                                        <span>🛠️ Harness</span>
+                                        <span class="accordion-arrow">&darr;</span>
+                                    </div>
+                                    <div class="accordion-body">
+                                        <p>Harness is a **fully managed agent loop** execution environment. It abstracts infrastructure management and orchestrates the prompt-response cycles automatically.</p>
+                                        <ul>
+                                            <li>Gives every agent session an isolated workspace with its own sandbox filesystem and virtual terminal.</li>
+                                            <li>Requires only defining model, system prompt, and tools list to get started.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <div class="accordion-header">
+                                        <span>📦 Built-in Tools</span>
+                                        <span class="accordion-arrow">&darr;</span>
+                                    </div>
+                                    <div class="accordion-body">
+                                        <p>Provides robust integrations of Amazon's managed operational tools directly into the agent context.</p>
+                                        <ul>
+                                            <li>**Secure Browser**: Allows agents to search, browse, and extract content from websites in real-time.</li>
+                                            <li>**Code Interpreter**: Runs sandboxed Python environment to execute mathematical computations, compile charts, or process CSV files.</li>
+                                            <li>**Knowledge Bases &amp; Search**: Native connections to AWS information repositories.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-right">
+                            <div class="terminal-container">
+                                <div class="terminal-header">
+                                    <span class="terminal-dot red"></span>
+                                    <span class="terminal-dot yellow"></span>
+                                    <span class="terminal-dot green"></span>
+                                    <span class="terminal-title">AgentCore CLI Demo</span>
+                                </div>
+                                <div class="terminal-body" id="cli-terminal">
+                                    <div class="line"><span class="cmd-prompt">$</span> npm install -g @aws/agentcore</div>
+                                    <div class="line ok">✓ Installed AgentCore CLI v1.2.0</div>
+                                    <div class="line"><span class="cmd-prompt">$</span> agentcore init my-agent</div>
+                                    <div class="line">Initializing new agent skeleton...</div>
+                                    <div class="line">Created files:</div>
+                                    <div class="line-indent">- agent.json (config)</div>
+                                    <div class="line-indent">- prompt.txt (system instructions)</div>
+                                    <div class="line-indent">- index.js (custom logic)</div>
+                                    <div class="line"><span class="cmd-prompt">$</span> agentcore deploy --harness</div>
+                                    <div class="line loading">Deploying my-agent to AWS AgentCore Harness...</div>
+                                    <div class="line success">🚀 Harness active! Invoke Endpoint: https://agentcore.us-east-1.amazonaws.com/harness/arn:...</div>
+                                </div>
+                            </div>
+                            <div class="text-center mt-10">
+                                <button class="btn btn-cyan" id="run-terminal-btn">Run Simulation</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="speaker-notes">
+                        <strong>Educator Note:</strong> The code interpreter here runs in a secure sandbox, separate from the server. Harness automates the agent's logic flow, so the developer does not need to write `while true` loop handling.
+                    </div>
+                </section>
+
+                <!-- SLIDE 7: AgentCore Modules Part 2 -->
+                <section class="slide" id="slide-6">
+                    <div class="slide-content grid-2-col">
+                        <div class="col-left">
+                            <div class="slide-section-label">AGENTCORE MODULES • CORE CONNECTIONS</div>
+                            <h2>Gateways &amp; Secure Identity</h2>
+                            <p class="description-large">Connecting agents to external APIs and managing permissions safely is critical in enterprise architectures.</p>
+                            
+                            <div class="card-outline border-purple mb-15">
+                                <h3>🔌 Gateways</h3>
+                                <p>Gateways use open source protocols, specifically the **Model Context Protocol (MCP)**, to expose tools to agents. This enables seamless connection to schemas and integrations without custom server architecture.</p>
+                                <ul class="list-bullet">
+                                    <li>Supports OpenAPI standard configurations.</li>
+                                    <li>Pre-built integrations automatically parse API parameters.</li>
+                                    <li>Requires zero infrastructure configuration to connect to third-party endpoints.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="col-right">
+                            <div class="card-outline border-cyan mb-15">
+                                <h3>🔑 Identity (Inbound &amp; Outbound)</h3>
+                                <p>Identity enables agents to securely manage access to resources by integrating with corporate identity providers (such as AWS IAM Identity Center or Auth0).</p>
+                                <div class="identity-flow-box">
+                                    <div class="flow-step">
+                                        <div class="step-lbl">Inbound Identity</div>
+                                        <p>Enables caller authentication. Verifies that the client invoking the agent has permission to start the session.</p>
+                                    </div>
+                                    <div class="flow-divider">&darr;</div>
+                                    <div class="flow-step">
+                                        <div class="step-lbl">Outbound Identity</div>
+                                        <p>Enables downstream resource delegation. The agent securely requests tokens to call corporate databases or calendars under the user's delegated identity.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="speaker-notes">
+                        <strong>Educator Note:</strong> MCP (Model Context Protocol) is an industry-open standard backed by Anthropic and AWS. Highlight that Gateways make MCP a managed AWS infrastructure element.
+                    </div>
+                </section>
+
+                <!-- SLIDE 8: AgentCore Modules Part 3 -->
+                <section class="slide" id="slide-7">
+                    <div class="slide-content grid-2-col">
+                        <div class="col-left">
+                            <div class="slide-section-label">AGENTCORE MODULES • CONTEXT &amp; CONTROL</div>
+                            <h2>Memory &amp; Policy Control</h2>
+                            <p class="description-large">Giving agents memory makes them intelligent; putting guardrails and policy constraints makes them safe.</p>
+                            
+                            <div class="card-glass border-gold">
+                                <h3>🧠 State and Memory Management</h3>
+                                <p>Memory enables agents to retain knowledge and learn continuously from every interaction, preventing context-blindness across sessions.</p>
+                                <div class="memory-types-grid">
+                                    <div class="mem-sub-type">
+                                        <div class="mem-lbl">Short-Term Memory</div>
+                                        <p>Keeps track of conversation history within the current active session (e.g. current variables, task stack).</p>
+                                    </div>
+                                    <div class="mem-sub-type">
+                                        <div class="mem-lbl">Long-Term Memory</div>
+                                        <p>Automatically extracts and archives facts, entities, and user preferences across multiple historical sessions to provide continuity.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-right">
+                            <div class="card-glass border-purple">
+                                <h3>🛡️ Policy (Cedar Auth)</h3>
+                                <p>Policy provides **deterministic control** over agent behavior. While LLMs are probabilistic, policy engines guarantee compliance with business rules.</p>
+                                
+                                <div class="policy-details">
+                                    <div class="badge-policy">AWS Cedar Integration</div>
+                                    <p>Rules can be authored in natural language or using **Cedar**—AWS's open-source policy language—to set fine-grained permissions.</p>
+                                    
+                                    <div class="cedar-snippet">
+                                        <pre><code>permit (
+    principal == User::"Alice",
+    action == Action::"ReadAccountBalance",
+    resource == Account::"12345"
+) when {
+    resource.region == "US"
+};</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="speaker-notes">
+                        <strong>Educator Note:</strong> Note that Memory is automatic. Developers do not need to write database retrieval scripts or vector stores manually for user preferences. Policy guarantees that even if the LLM decides to trigger an action, AWS blocks it at the Gateway if it violates Cedar policy.
+                    </div>
+                </section>
+
+                <!-- SLIDE 9: AgentCore Modules Part 4 -->
+                <section class="slide" id="slide-8">
+                    <div class="slide-content grid-2-col">
+                        <div class="col-left">
+                            <div class="slide-section-label">AGENTCORE MODULES • DEPLOYMENT &amp; SHARING</div>
+                            <h2>Registry &amp; Runtime</h2>
+                            <p class="description-large">Discovering agent assets across teams and running them in isolated serverless compute instances.</p>
+                            
+                            <div class="card-outline border-cyan mb-15">
+                                <h3>📂 Registry (Preview)</h3>
+                                <p>A centralized hub to publish, version, share, and reuse agentic assets across an entire enterprise organization.</p>
+                                <ul class="list-bullet">
+                                    <li>**Asset Discovery**: Register existing agents, MCP servers, standalone tools, and specific skill bundles.</li>
+                                    <li>**Version Control**: Lock specific agent versions for production workloads while testing new iterations in sandbox.</li>
+                                    <li>**Collaboration**: Promotes organizational reusability and avoids redundant tool implementation.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="col-right">
+                            <div class="card-outline border-purple mb-15">
+                                <h3>🚀 Runtime for Agents and Tools</h3>
+                                <p>Runtime is the execution engine of AgentCore, providing a secure, serverless, and purpose-built environment to scale agent code.</p>
+                                
+                                <div class="runtime-specs">
+                                    <div class="spec-item">
+                                        <strong>⚡ Fast Cold Starts</strong>
+                                        <p>Optimized for instantaneous invocation, preventing latency spikes during customer chats.</p>
+                                    </div>
+                                    <div class="spec-item">
+                                        <strong>🔒 True Session Isolation</strong>
+                                        <p>Each user session runs in an isolated compute boundary with local sandboxing.</p>
+                                    </div>
+                                    <div class="spec-item">
+                                        <strong>🤖 Agnostic Scaling</strong>
+                                        <p>Supports any model and any code library (Python, JS, Go). Scale agents up and down automatically.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="speaker-notes">
+                        <strong>Educator Note:</strong> Runtime behaves like a container service tailored for AI agent loops. It handles long-running multi-modal inputs without timeout limits commonly faced by standard Serverless functions.
+                    </div>
+                </section>
+
+                <!-- SLIDE 10: AgentCore Modules Part 5 -->
+                <section class="slide" id="slide-9">
+                    <div class="slide-content grid-2-col">
+                        <div class="col-left">
+                            <div class="slide-section-label">AGENTCORE MODULES • VALUE &amp; ASSESSMENT</div>
+                            <h2>Payments, Observability &amp; Evaluations</h2>
+                            <p class="description-large">Handling paid content access and assessing model behavior with metrics and trace execution logs.</p>
+                            
+                            <div class="card-glass border-gold mb-15">
+                                <h3>💳 Payments</h3>
+                                <p>Enables AI agents to autonomously execute micro-transaction payments for paid APIs, custom tools, or proprietary knowledge content.</p>
+                                <ul class="list-bullet">
+                                    <li>Credentials and wallets are securely managed under **AgentCore Identity**.</li>
+                                    <li>Enables pay-per-call capabilities, facilitating agent-to-agent economics.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="col-right">
+                            <div class="card-glass border-cyan">
+                                <h3>📊 Observability &amp; Evaluations</h3>
+                                <p>Ensures engineers can monitor and evaluate production agent behavior over time.</p>
+                                
+                                <div class="eval-grid">
+                                    <div class="eval-box">
+                                        <strong>🔍 Observability</strong>
+                                        <p>Collects detailed trace logs. Step-by-step reasoning paths show what tools the agent called, what prompts were generated, and what outputs were returned.</p>
+                                    </div>
+                                    <div class="eval-box">
+                                        <strong>📈 Evaluations</strong>
+                                        <p>Supports batch evaluations, online evaluation configs, and custom metrics to test changes to prompt structures or foundation models before deployment.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="speaker-notes">
+                        <strong>Educator Note:</strong> The payment module is a major advancement, allowing agents to spend small budgets on their own API requests. The evaluation module helps engineers avoid regressions when changing prompt templates.
+                    </div>
+                </section>
+
+                <!-- SLIDE 11: AWS Bedrock Agents vs. AgentCore -->
+                <section class="slide" id="slide-10">
+                    <div class="slide-content">
+                        <div class="slide-section-label">COMPARATIVE ANALYSIS</div>
+                        <h2>Amazon Bedrock Agents vs. AgentCore</h2>
+                        <p class="slide-intro-text">Students often confuse these two offerings. Here is the distinction between Bedrock Agents (AWS's default agent builder) and Bedrock AgentCore (the managed platform runtime).</p>
+                        
+                        <div class="table-container">
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>Dimension</th>
+                                        <th>Amazon Bedrock Agents (Classic)</th>
+                                        <th>Amazon Bedrock AgentCore</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="dim-header">Primary Focus</td>
+                                        <td>Simple, low-code AWS-native agent builder.</td>
+                                        <td>Managed platform/runtime to deploy and scale *any* agent.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="dim-header">Framework Support</td>
+                                        <td>Locked to Amazon's proprietary orchestration loop.</td>
+                                        <td>**Framework Agnostic** (LangGraph, CrewAI, AutoGen, custom code).</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="dim-header">Model Agnosticism</td>
+                                        <td>Optimized for Bedrock-native models (e.g. Claude, Titan).</td>
+                                        <td>**Model Agnostic** (Allows bringing outside models, custom imported FMs).</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="dim-header">Extensibility</td>
+                                        <td>Requires AWS Lambda action groups.</td>
+                                        <td>Supports **Model Context Protocol (MCP)**, sandboxed execution.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="dim-header">Session Memory</td>
+                                        <td>Managed session attributes (ephemeral).</td>
+                                        <td>**Automated Short &amp; Long term memory** across multiple sessions.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="dim-header">Security Control</td>
+                                        <td>AWS IAM roles per agent.</td>
+                                        <td>Granular **Cedar Policy authorization** + Inbound/Outbound identity.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="speaker-notes">
+                        <strong>Educator Note:</strong> Explain this as: Bedrock Agents (Classic) is like an Apple ecosystem—highly integrated, fast to build, but closed. AgentCore is like a managed Kubernetes container cluster specifically tuned for AI agents—it hosts and manages whatever agent code framework you choose.
+                    </div>
+                </section>
+
+                <!-- SLIDE 12: Discussion & Summary -->
+                <section class="slide" id="slide-11">
+                    <div class="slide-content grid-2-col">
+                        <div class="col-left">
+                            <div class="slide-section-label">CLASS DISCUSSION &amp; PRACTICE</div>
+                            <h2>Review &amp; Discussion Points</h2>
+                            <p class="description-large">Engage your students by reviewing key architecture patterns and real-world implications.</p>
+                            
+                            <div class="discussion-list">
+                                <div class="disc-card">
+                                    <strong>1. Multi-Agent Orchestration</strong>
+                                    <p>How does the AgentCore Registry facilitate teams building specialized agents that collaborate, using standard protocols like MCP?</p>
+                                </div>
+                                <div class="disc-card">
+                                    <strong>2. Secure Resource Access</strong>
+                                    <p>Under what scenarios is **Outbound Identity** delegation essential for a customer service agent? (Hint: Accessing private user accounts/order history).</p>
+                                </div>
+                                <div class="disc-card">
+                                    <strong>3. Compliance and Cedar</strong>
+                                    <p>Why should developers rely on deterministic policy files (Cedar) instead of trying to instruct the LLM in the system prompt to "never buy items over $100"?</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-right flex-center">
+                            <div class="summary-box">
+                                <h3>Lecture Summary</h3>
+                                <ul class="summary-list">
+                                    <li><strong>AWS Bedrock</strong>: Provides the models (FMs), Guardrails, Knowledge Bases (RAG), and model fine-tuning.</li>
+                                    <li><strong>AgentCore Harness/CLI/SDK</strong>: Connective code and tools to define and invoke agents easily.</li>
+                                    <li><strong>AgentCore Modules</strong>: 10 modular capabilities (Memory, Identity, Policy, Gateways, built-in tools) managing complex engineering requirements.</li>
+                                    <li><strong>AgentCore Runtime</strong>: Purpose-built serverless scaling and isolation.</li>
+                                </ul>
+                                <div class="badge-ready">Session Complete • Ready for Labs</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="speaker-notes">
+                        <strong>Educator Note:</strong> For question 3: Reinforce the difference between *probabilistic* constraints (prompts, which can be jailbroken or hallucinated) and *deterministic* constraints (Cedar policy, which is enforced at the network/auth layer by AWS).
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- Slide Navigation Controls -->
+            <div class="controls-overlay">
+                <button class="nav-btn prev-btn" id="prev-btn" title="Previous Slide">&larr; Previous</button>
+                <div class="slide-indicator">
+                    <span id="current-slide-num">1</span> / <span id="total-slides-num">12</span>
+                </div>
+                <button class="nav-btn next-btn" id="next-btn" title="Next Slide">Next &rarr;</button>
+                <button class="fullscreen-btn" id="fullscreen-btn" title="Toggle Fullscreen">⛶</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for Architecture Diagram node clicks -->
+    <div class="modal-overlay hidden" id="detail-modal">
+        <div class="modal-card">
+            <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+            <div class="modal-content" id="modal-body-content">
+                <!-- Dynamically filled -->
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
