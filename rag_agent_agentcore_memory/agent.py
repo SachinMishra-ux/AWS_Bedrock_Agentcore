@@ -1,10 +1,9 @@
 import os
 from langchain.agents import create_agent
 from langchain_aws import ChatBedrockConverse
-#from langgraph.checkpoint.memory import MemorySaver
 from langgraph_checkpoint_aws import AgentCoreMemorySaver, AgentCoreMemoryStore
 import config
-from tools import query_knowledge_base, predict_salary, explain_salary_prediction, salary_gap_analysis
+from tools import query_knowledge_base
 
 try:
     from middleware import MemoryMiddleware
@@ -14,29 +13,25 @@ except ImportError:
 def compile_rag_agent(checkpointer=None, store=None):
     """Initializes LLM and compiles the LangGraph RAG agent with memory checkpointing."""
     
-    # Initialize Bedrock Converse LLM (e.g. us.amazon.nova-2-lite-v1:0)
+    # Initialize Bedrock Converse LLM
     llm = ChatBedrockConverse(
         model=config.CHAT_MODEL_ID,
         temperature=config.TEMPERATURE,
         region_name=config.AWS_REGION
     )
     
-    # Define system instruction parameters instructing RAG and Salary Prediction behavior
+    # System prompt focusing on RAG and conversational memory
     rag_system_prompt = (
-        "You are a specialized RAG and Salary Prediction Assistant. "
+        "You are a specialized RAG Assistant equipped with short-term and long-term memory. "
         "Your goals are:\n"
-        "1. Answer general user queries using the query_knowledge_base tool. Always query the knowledge base first to retrieve facts, and strictly cite sources.\n"
-        "2. Assist users with salary predictions, explanations, and salary gap analysis using the predict_salary, "
-        "explain_salary_prediction, and salary_gap_analysis tools. "
-        "Ensure you ask or extract the required profile details (experience_years, education_level, num_skills, "
-        "location_index, and current_salary_lpa) when performing salary prediction/analysis tasks."
+        "1. Answer user queries using the query_knowledge_base tool. Query the knowledge base first to retrieve facts and cite sources.\n"
+        "2. Retain conversational context across multiple turns. Remember user details, name, and preferences shared during the chat.\n"
+        "3. When answering, personalize responses using previously recalled context whenever relevant."
     )
     
-    # Compile Agent using create_agent
-    # If no custom checkpointer/store is passed, we check if AgentCore memory is enabled via config
+    # Configure AgentCore Managed Memory (STM checkpointer & LTM store)
     if checkpointer is None:
         if config.MEMORY_ID:
-            # Use managed AWS Bedrock AgentCore Memory Saver
             checkpointer = AgentCoreMemorySaver(
                 memory_id=config.MEMORY_ID,
                 region_name=config.AWS_REGION
@@ -44,7 +39,6 @@ def compile_rag_agent(checkpointer=None, store=None):
             
     if store is None:
         if config.MEMORY_ID:
-            # Use managed AWS Bedrock AgentCore Memory Store
             store = AgentCoreMemoryStore(
                 memory_id=config.MEMORY_ID,
                 region_name=config.AWS_REGION
@@ -52,7 +46,7 @@ def compile_rag_agent(checkpointer=None, store=None):
         
     agent = create_agent(
         model=llm,
-        tools=[query_knowledge_base, predict_salary, explain_salary_prediction, salary_gap_analysis],
+        tools=[query_knowledge_base],
         system_prompt=rag_system_prompt,
         checkpointer=checkpointer,
         store=store,

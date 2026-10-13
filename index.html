@@ -799,8 +799,12 @@
             // Add Thinking indicator
             const { msgDiv: thinkingBubble, interval: animationInterval } = appendThinkingUI(promptText);
 
+            const endpoint = window.location.origin.startsWith("http")
+                ? `${window.location.origin}/chat`
+                : "http://localhost:8000/chat";
+
             try {
-                const response = await fetch("http://localhost:8000/chat", {
+                const response = await fetch(endpoint, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({

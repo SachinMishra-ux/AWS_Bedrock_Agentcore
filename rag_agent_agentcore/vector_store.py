@@ -36,6 +36,20 @@ knowledge_base = [
             "This helps reduce model hallucinations, provides up-to-date information, and leverages proprietary data."
         ),
         metadata={"source": "RAG Architecture Guide"}
+    ),
+     Document(
+        page_content=(
+            "AWS Bedrock AgentCore provides built-in memory capabilities with short-term memory (STM) and long-term memory (LTM). "
+            "Short-term memory utilizes AgentCoreMemorySaver to persist session state and thread-level conversation checkpoints across multi-turn interactions. "
+            "Long-term memory utilizes AgentCoreMemoryStore, a managed semantic memory store that indexes user interactions, profile details, and preferences across sessions using namespaces and semantic similarity search."
+        ),
+        metadata={"source": "AWS Bedrock AgentCore Memory Architecture"}
+    ),
+    Document(
+        page_content=(
+            "Sachin Mishra is a software engineer and AI enthusiast with expertise in building applications using large language models, vector databases, and cloud services. He has overall of 6 years of experience in software development and has been actively exploring the capabilities of AI and machine learning technologies."
+        ),
+        metadata={"source": "Sachin Mishra Profile"}
     )
 ]
 

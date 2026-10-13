@@ -41,7 +41,7 @@ class MemoryMiddleware(AgentMiddleware):
         if last_human_msg is not None:
             # 1. Save the latest human message to long-term memory
             try:
-                store.put(namespace, str(uuid.uuid4()), {"message": last_human_msg.content})
+                store.put(namespace, str(uuid.uuid4()), {"message": last_human_msg})
             except Exception as e:
                 print(f"Error saving user message to store: {e}")
                 
@@ -113,7 +113,7 @@ class MemoryMiddleware(AgentMiddleware):
         for msg in reversed(messages):
             if isinstance(msg, AIMessage):
                 try:
-                    store.put(namespace, str(uuid.uuid4()), {"message": msg.content})
+                    store.put(namespace, str(uuid.uuid4()), {"message": msg})
                 except Exception as e:
                     print(f"Error saving assistant message to store: {e}")
                 break

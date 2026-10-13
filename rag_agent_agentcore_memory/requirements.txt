@@ -5,4 +5,4 @@ langchain-community>=0.4.2
 langgraph>=1.2.6
 bedrock-agentcore>=1.15.0
 langgraph-checkpoint-aws>=1.0.0
-mcp>=1.0.0
+python-dotenv>=1.0.0
